@@ -65,3 +65,26 @@ modal, deep linking, typed params, and guarded routes with predictable behavior.
 - Invalid params are safely handled with consistent user feedback.
 - Selected deep links route correctly or fail safely.
 - Shared screen is reachable from multiple paths with consistent behavior.
+
+## Manual Verification: Auth Entry and Exit
+
+1. **Signed-out entry**
+   - Launch the app in a fresh session.
+   - Confirm auth flow is visible (`auth-welcome-screen` and/or `auth-signin-screen`).
+   - Confirm signed-in placeholder is not visible (`root-app-placeholder-screen` is absent).
+
+2. **Sign-in transition**
+   - From auth flow, complete the sign-in action.
+   - Confirm root switches to signed-in area (`root-app-placeholder-screen` becomes visible).
+
+3. **Signed-in visibility**
+   - Verify signed-in placeholder shows welcome text and sign-out button (`root-app-placeholder-signout-button`).
+
+4. **Sign-out reset**
+   - Tap the sign-out button.
+   - Confirm app returns to auth flow and signed-in placeholder is removed.
+
+5. **Protected access handling**
+   - While signed out, verify protected signed-in placeholder is not reachable/visible.
+   - Optional automated check:
+     - `npm --prefix mobile test -- --testPathPattern="auth-guard-redirect.test" --watchman=false`
