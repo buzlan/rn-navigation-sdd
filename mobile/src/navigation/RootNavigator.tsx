@@ -57,7 +57,10 @@ export function RootNavigator() {
       {isRestoring ? (
         <Stack.Screen name="Auth" component={RestoringSessionView} />
       ) : canAccessApp ? (
-        <Stack.Screen name="App">
+        <Stack.Screen
+          key={`app-session-${authState.sessionVersion}`}
+          name="App"
+        >
           {() => <SignedInPlaceholder displayName={displayName} />}
         </Stack.Screen>
       ) : (

@@ -9,6 +9,11 @@ export type AuthState = {
   status: AuthStatus;
   user: AuthUser | null;
   lastAuthChangeAt: string;
+  /**
+   * Incremented on explicit sign-out so protected navigator trees can be remounted
+   * and prior signed-in history is cleared.
+   */
+  sessionVersion: number;
 };
 
 type Listener = () => void;
@@ -18,7 +23,8 @@ const listeners = new Set<Listener>();
 let state: AuthState = {
   status: 'signedOut',
   user: null,
-  lastAuthChangeAt: new Date().toISOString()
+  lastAuthChangeAt: new Date().toISOString(),
+  sessionVersion: 0
 };
 
 function emit(): void {
@@ -27,11 +33,16 @@ function emit(): void {
   }
 }
 
-function commit(next: Pick<AuthState, 'status' | 'user'>): void {
+type CommitOptions = {
+  bumpSessionVersion?: boolean;
+};
+
+function commit(next: Pick<AuthState, 'status' | 'user'>, options: CommitOptions = {}): void {
   state = {
     status: next.status,
     user: next.user,
-    lastAuthChangeAt: new Date().toISOString()
+    lastAuthChangeAt: new Date().toISOString(),
+    sessionVersion: options.bumpSessionVersion ? state.sessionVersion + 1 : state.sessionVersion
   };
   emit();
 }
@@ -65,7 +76,7 @@ export function signIn(userId: string, displayName?: string): void {
  * Clears the session and returns to signed-out.
  */
 export function signOut(): void {
-  commit({ status: 'signedOut', user: null });
+  commit({ status: 'signedOut', user: null }, { bumpSessionVersion: true });
 }
 
 /**
