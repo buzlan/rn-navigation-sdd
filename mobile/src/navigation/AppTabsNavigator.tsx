@@ -1,18 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { HomeStackNavigator } from '@features/home/navigation/HomeStackNavigator';
 import type { AppTabParamList } from './params/appParams';
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
-
-function HomeTabPlaceholderScreen() {
-  return (
-    <View style={styles.container} testID="tab-home-placeholder">
-      <Text style={styles.title}>Home Tab</Text>
-      <Text style={styles.subtitle}>Placeholder content for upcoming Home flow.</Text>
-    </View>
-  );
-}
 
 function ExploreTabPlaceholderScreen() {
   return (
@@ -35,7 +27,7 @@ function ProfileTabPlaceholderScreen() {
 export function AppTabsNavigator() {
   return (
     <Tab.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <Tab.Screen name="Home" component={HomeTabPlaceholderScreen} />
+      <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Explore" component={ExploreTabPlaceholderScreen} />
       <Tab.Screen name="Profile" component={ProfileTabPlaceholderScreen} />
     </Tab.Navigator>
