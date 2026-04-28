@@ -4,14 +4,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthNavigator } from '@features/auth/navigation/AuthNavigator';
 import { getAuthState, signIn, subscribeAuth } from '@features/auth/state/authStore';
+import { HomeModalScreen } from '@features/home/screens/HomeModalScreen';
 import {
   selectCanAccessApp,
   selectIsRestoring
 } from '@features/auth/state/authSelectors';
+import type { HomeStackParamList } from '@navigation/params/homeParams';
 import type { RootStackParamList } from '@navigation/params/routeTypes';
 import { AppTabsNavigator } from './AppTabsNavigator';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+type RootNavigatorParamList = RootStackParamList & {
+  HomeModalInfo: HomeStackParamList['HomeModalInfo'];
+};
+
+const Stack = createNativeStackNavigator<RootNavigatorParamList>();
 
 function RestoringSessionView() {
   return (
@@ -32,12 +38,19 @@ export function RootNavigator() {
       {isRestoring ? (
         <Stack.Screen name="Auth" component={RestoringSessionView} />
       ) : canAccessApp ? (
-        <Stack.Screen
-          key={`app-session-${authState.sessionVersion}`}
-          name="App"
-        >
-          {() => <AppTabsNavigator />}
-        </Stack.Screen>
+        <>
+          <Stack.Screen
+            key={`app-session-${authState.sessionVersion}`}
+            name="App"
+          >
+            {() => <AppTabsNavigator />}
+          </Stack.Screen>
+          <Stack.Screen
+            component={HomeModalScreen}
+            name="HomeModalInfo"
+            options={{ headerShown: true, presentation: 'modal', title: 'Modal' }}
+          />
+        </>
       ) : (
         <Stack.Screen name="Auth">
           {() => (
