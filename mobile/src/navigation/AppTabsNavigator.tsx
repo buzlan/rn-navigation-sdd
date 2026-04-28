@@ -27,7 +27,11 @@ function ProfileTabPlaceholderScreen() {
 export function AppTabsNavigator() {
   return (
     <Tab.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeStackNavigator}
+        options={{ headerShown: false, title: 'Home', tabBarLabel: 'Home' }}
+      />
       <Tab.Screen name="Explore" component={ExploreTabPlaceholderScreen} />
       <Tab.Screen name="Profile" component={ProfileTabPlaceholderScreen} />
     </Tab.Navigator>

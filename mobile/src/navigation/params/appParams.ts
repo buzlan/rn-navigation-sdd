@@ -6,7 +6,7 @@ import type { HomeStackParamList } from './homeParams';
  * Bottom tabs after sign-in. The Home tab hosts a nested stack (`HomeStackParamList`).
  */
 export type AppTabParamList = {
-  Home: NavigatorScreenParams<HomeStackParamList> | undefined;
+  HomeTab: NavigatorScreenParams<HomeStackParamList> | undefined;
   Explore: undefined;
   Profile: undefined;
 };

@@ -5,13 +5,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthNavigator } from '@features/auth/navigation/AuthNavigator';
 import { getAuthState, signIn, subscribeAuth } from '@features/auth/state/authStore';
 import { HomeModalScreen } from '@features/home/screens/HomeModalScreen';
+import { AppDrawerNavigator } from '@features/secondary/navigation/AppDrawerNavigator';
 import {
   selectCanAccessApp,
   selectIsRestoring
 } from '@features/auth/state/authSelectors';
 import type { HomeStackParamList } from '@navigation/params/homeParams';
 import type { RootStackParamList } from '@navigation/params/routeTypes';
-import { AppTabsNavigator } from './AppTabsNavigator';
 
 type RootNavigatorParamList = RootStackParamList & {
   HomeModalInfo: HomeStackParamList['HomeModalInfo'];
@@ -43,7 +43,7 @@ export function RootNavigator() {
             key={`app-session-${authState.sessionVersion}`}
             name="App"
           >
-            {() => <AppTabsNavigator />}
+            {() => <AppDrawerNavigator />}
           </Stack.Screen>
           <Stack.Screen
             component={HomeModalScreen}
