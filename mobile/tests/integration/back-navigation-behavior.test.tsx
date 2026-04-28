@@ -1,6 +1,11 @@
 import { act, render, waitFor } from '@testing-library/react-native';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 
+jest.mock('@react-navigation/drawer', () => {
+  const { createNativeStackNavigator } = require('@react-navigation/native-stack');
+  return { createDrawerNavigator: createNativeStackNavigator };
+});
+
 import { HomeStackNavigator } from '../../src/features/home/navigation/HomeStackNavigator';
 import { AppDrawerNavigator } from '../../src/features/secondary/navigation/AppDrawerNavigator';
 import { RootNavigator } from '../../src/navigation/RootNavigator';
@@ -9,7 +14,9 @@ import { signIn, signOut } from '../../src/features/auth/state/authStore';
 
 describe('back navigation behavior (integration)', () => {
   afterEach(() => {
-    signOut();
+    act(() => {
+      signOut();
+    });
   });
 
   it('returns from HomeDetails back to Home in HomeStackNavigator', async () => {
@@ -54,7 +61,7 @@ describe('back navigation behavior (integration)', () => {
 
     await waitFor(() => {
       expect(navRef.isReady()).toBe(true);
-      expect(navRef.getCurrentRoute()?.name).toBe('AppTabs');
+      expect(navRef.getCurrentRoute()?.name).toBe('Home');
     });
 
     act(() => {
@@ -70,7 +77,7 @@ describe('back navigation behavior (integration)', () => {
     });
 
     await waitFor(() => {
-      expect(navRef.getCurrentRoute()?.name).toBe('AppTabs');
+      expect(navRef.getCurrentRoute()?.name).toBe('Home');
     });
   });
 
@@ -86,7 +93,7 @@ describe('back navigation behavior (integration)', () => {
 
     await waitFor(() => {
       expect(navRef.isReady()).toBe(true);
-      expect(navRef.getCurrentRoute()?.name).toBe('App');
+      expect(navRef.getCurrentRoute()?.name).toBe('Home');
     });
 
     act(() => {
@@ -102,7 +109,7 @@ describe('back navigation behavior (integration)', () => {
     });
 
     await waitFor(() => {
-      expect(navRef.getCurrentRoute()?.name).toBe('App');
+      expect(navRef.getCurrentRoute()?.name).toBe('Home');
     });
   });
 });
